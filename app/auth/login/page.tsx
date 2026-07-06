@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase"; // Ensure this points to our updated lib file
-import { Mail, Lock, Chrome, ArrowLeft } from "lucide-react";
+import { motion } from "framer-motion";
+import { supabase } from "@/lib/supabase";
+import { ArrowLeft, Chrome, Lock, Mail, ShieldCheck } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -25,7 +26,8 @@ export default function LoginPage() {
       setErrorMsg(error.message);
       setLoading(false);
     } else {
-      window.location.href = "/dashboard";
+      const nextUrl = new URLSearchParams(window.location.search).get("next") || "/dashboard";
+      window.location.href = nextUrl;
     }
   };
 
@@ -49,18 +51,26 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#080b11] text-slate-900 dark:text-slate-100 flex items-center justify-center p-6 relative transition-colors duration-300">
-      <div className="absolute top-10 left-10">
+    <div className="min-h-screen overflow-hidden bg-[radial-gradient(circle_at_25%_15%,rgba(59,130,246,0.2),transparent_30%),radial-gradient(circle_at_80%_80%,rgba(13,148,136,0.14),transparent_30%),#f8fafc] dark:bg-[radial-gradient(circle_at_25%_15%,rgba(59,130,246,0.16),transparent_30%),radial-gradient(circle_at_80%_80%,rgba(249,115,22,0.12),transparent_30%),#06090e] text-slate-900 dark:text-slate-100 flex items-center justify-center p-6 relative transition-colors duration-300">
+      <div className="absolute top-8 left-8 z-10">
         <Link href="/" className="flex items-center space-x-2 text-sm text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
           <ArrowLeft className="h-4 w-4" />
           <span>Back to Home</span>
         </Link>
       </div>
 
-      <div className="w-full max-w-md bg-white dark:bg-[#0f141c] border border-slate-200 dark:border-slate-800/80 p-8 rounded-3xl shadow-2xl space-y-6">
+      <motion.div
+        initial={{ opacity: 0, y: 24, rotateX: -8 }}
+        animate={{ opacity: 1, y: 0, rotateX: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="w-full max-w-md bg-white/85 dark:bg-[#0f141c]/85 backdrop-blur-2xl border border-white/70 dark:border-slate-800/80 p-8 rounded-[2rem] shadow-2xl space-y-6 relative z-10"
+      >
         <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-black text-slate-950 dark:text-white uppercase font-mono tracking-tight">Welcome Back</h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400">Sign in to resume secure operational synchronization.</p>
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white dark:bg-white dark:text-[#080b11] shadow-lg">
+            <ShieldCheck className="h-5 w-5" />
+          </div>
+          <h1 className="text-3xl font-black text-slate-950 dark:text-white tracking-tight">Welcome back</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Sign in to your AI email cockpit.</p>
         </div>
 
         {errorMsg && (
@@ -78,7 +88,7 @@ export default function LoginPage() {
               placeholder="Email Address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-[#080b11] border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-electric transition-all"
+              className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-50/90 dark:bg-[#080b11] border border-slate-200 dark:border-slate-800 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-electric transition-all"
             />
           </div>
 
@@ -90,16 +100,16 @@ export default function LoginPage() {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-[#080b11] border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-electric transition-all"
+              className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-50/90 dark:bg-[#080b11] border border-slate-200 dark:border-slate-800 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-electric transition-all"
             />
           </div>
 
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full py-3 bg-slate-950 dark:bg-white text-white dark:text-[#080b11] text-xs font-bold rounded-xl shadow-md hover:opacity-90 transition-all uppercase tracking-wide disabled:opacity-50"
+            className="w-full py-3.5 bg-slate-950 dark:bg-white text-white dark:text-[#080b11] text-sm font-bold rounded-2xl shadow-xl hover:-translate-y-0.5 hover:opacity-90 transition-all disabled:opacity-50"
           >
-            {loading ? "Authorizing Security..." : "Sign In Credentials"}
+            {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
@@ -112,10 +122,10 @@ export default function LoginPage() {
         <button 
           onClick={handleGoogleLogin}
           type="button"
-          className="w-full py-3 bg-slate-50 dark:bg-[#080b11] border border-slate-200 dark:border-slate-800/80 rounded-xl text-xs font-bold text-slate-800 dark:text-white flex items-center justify-center space-x-3 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all uppercase tracking-wide"
+          className="w-full py-3.5 bg-slate-50/90 dark:bg-[#080b11] border border-slate-200 dark:border-slate-800/80 rounded-2xl text-sm font-bold text-slate-800 dark:text-white flex items-center justify-center space-x-3 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all"
         >
           <Chrome className="h-4 w-4 text-brand-electric" />
-          <span>Continue with Google Identity</span>
+          <span>Continue with Google</span>
         </button>
 
         <p className="text-center text-xs text-slate-500 dark:text-slate-400">
@@ -124,7 +134,7 @@ export default function LoginPage() {
             Register Workspace
           </Link>
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 }

@@ -2,8 +2,43 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowRight, Mail, Shield, Calendar, Sparkles, LayoutDashboard } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  Calendar,
+  CheckCircle2,
+  Clock3,
+  Mail,
+  MailCheck,
+  Shield,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
+
+const features = [
+  { icon: Shield, title: "Mail classification", copy: "Critical, important, spam, and scam threads are separated into clean review lanes.", reveal: "Know what needs action before opening the message." },
+  { icon: Sparkles, title: "Message summaries", copy: "Dense snippets become concise, readable context with the next action surfaced.", reveal: "Less reading, faster decisions." },
+  { icon: Calendar, title: "Calendar automation", copy: "Detected meetings and deadlines become schedule-ready Google Calendar actions.", reveal: "No more manual copy-paste from email." },
+  { icon: Zap, title: "Load more analysis", copy: "Analyze inbox batches of five and keep expanding the stream as needed.", reveal: "Built for real inbox workflows." },
+];
+
+const marqueeItems = [
+  "Mail classification",
+  "Calendar automation",
+  "Scam detection",
+  "Priority stream",
+  "Executive summaries",
+  "Batch analysis",
+  "Protected dashboard",
+  "Persona settings",
+];
+
+const inboxRows = [
+  ["Security vendor", "API key rotation due tomorrow", "critical", "text-rose-500"],
+  ["Product lead", "Design review moved to 4 PM", "event", "text-brand-teal"],
+  ["Founder update", "Metrics packet and investor notes", "important", "text-brand-amber"],
+];
 
 export default function LandingPage() {
   const [emailInput, setEmailInput] = useState("");
@@ -16,156 +51,238 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-brand-dark text-slate-900 dark:text-slate-100 transition-colors duration-300 relative">
-      
-      {/* Background Ambience Elements for Dark Mode */}
-      <div className="hidden dark:block top-0 left-1/4 glow-orb-blue" />
-      <div className="hidden dark:block top-1/3 right-1/4 glow-orb-orange" />
-
-      {/* Header Navigation */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-brand-dark/70 border-b border-slate-200 dark:border-slate-800/60 transition-colors">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center space-x-12">
-            <Link href="/" className="text-2xl font-bold tracking-tight bg-gradient-to-r from-slate-950 via-slate-700 to-slate-500 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent uppercase font-mono">
-              DONNA
-            </Link>
-            <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600 dark:text-slate-400">
-              <Link href="#features" className="hover:text-slate-950 dark:hover:text-white transition-colors">Features</Link>
-              <Link href="/pricing" className="hover:text-slate-950 dark:hover:text-white transition-colors">Pricing</Link>
-              <Link href="/enterprise" className="hover:text-slate-950 dark:hover:text-white transition-colors">Enterprise</Link>
-              <Link href="#help" className="hover:text-slate-950 dark:hover:text-white transition-colors">Help</Link>
-            </nav>
-          </div>
-          
-          <div className="flex items-center space-x-6">
+    <div className="min-h-screen overflow-hidden bg-[#f7f9fc] text-slate-950 dark:bg-[#05070c] dark:text-white transition-colors duration-300">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-white/70 backdrop-blur-2xl dark:bg-[#05070c]/65">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+          <Link href="/" className="font-mono text-2xl font-black tracking-tight">DONNA</Link>
+          <nav className="hidden items-center gap-8 text-sm font-semibold text-slate-600 dark:text-slate-300 md:flex">
+            <Link href="#features" className="transition hover:text-slate-950 dark:hover:text-white">Features</Link>
+            <Link href="#workflow" className="transition hover:text-slate-950 dark:hover:text-white">Workflow</Link>
+            <Link href="/pricing" className="transition hover:text-slate-950 dark:hover:text-white">Pricing</Link>
+            <Link href="/enterprise" className="transition hover:text-slate-950 dark:hover:text-white">Enterprise</Link>
+          </nav>
+          <div className="flex items-center gap-4">
             <ThemeToggle />
-            <Link href="/auth/login" className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white transition-colors">
-              Login
-            </Link>
-            <Link href="/auth/signup" className="text-sm font-medium bg-slate-950 text-white dark:bg-white dark:text-brand-dark px-5 py-2.5 rounded-full hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-md">
-              Try started
+            <Link href="/auth/login" className="hidden text-sm font-bold text-slate-600 transition hover:text-slate-950 dark:text-slate-300 dark:hover:text-white sm:block">Login</Link>
+            <Link href="/auth/signup" className="rounded-full bg-white px-5 py-2.5 text-sm font-black text-[#05070c] shadow-xl shadow-black/20 transition hover:-translate-y-0.5">
+              Start free
             </Link>
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <main className="max-w-7xl mx-auto px-6 pt-16 pb-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        
-        {/* Left Call to Action Copy */}
-        <div className="lg:col-span-7 flex flex-col justify-center space-y-8">
-          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.1] text-slate-950 dark:text-white">
-            Achieve Inbox Zero <br />
-            <span className="bg-gradient-to-r from-brand-blue to-brand-electric bg-clip-text text-transparent">
-              with AI Email Assistant.
-            </span>
-          </h1>
-          
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-xl leading-relaxed">
-            Let AI organize your email. Automatically sort, archive, and craft replies so you can get to what matters. No more inbox clutter.
-          </p>
-
-          <form onSubmit={handleTryNow} className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-3 max-w-md w-full">
-            <input 
-              type="email" 
-              required
-              placeholder="Enter your email address" 
-              value={emailInput}
-              onChange={(e) => setEmailInput(e.target.value)}
-              className="w-full px-5 py-4 rounded-xl bg-slate-50 dark:bg-[#0f141c] border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-electric transition-all"
+      <main>
+        <section className="relative min-h-screen overflow-hidden pt-20">
+          <div className="neural-bg" />
+          {[0, 1, 2, 3, 4].map((line) => (
+            <div
+              key={line}
+              className="wave-line"
+              style={{
+                top: `${36 + line * 8}%`,
+                "--r": `${line % 2 ? -4 : 5}deg`,
+                "--y": `${line % 2 ? -22 : 18}px`,
+                animationDelay: `${line * -1.2}s`,
+              } as React.CSSProperties}
             />
-            <button 
-              type="submit"
-              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-blue to-brand-electric text-white font-medium rounded-xl hover:opacity-95 transition-all shadow-lg flex items-center justify-center space-x-2 shrink-0"
+          ))}
+
+          <div className="relative z-10 mx-auto grid min-h-[calc(100vh-5rem)] max-w-7xl grid-cols-1 items-center gap-12 px-6 py-16 lg:grid-cols-12">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, ease: "easeOut" }}
+              className="lg:col-span-6"
             >
-              <span>Try it now</span>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-black uppercase tracking-wider text-white/80 backdrop-blur-xl">
+                <Sparkles className="h-3.5 w-3.5 text-brand-teal" />
+                AI inbox command center
+              </div>
+              <h1 className="max-w-3xl text-5xl font-black leading-[1.02] tracking-tight text-white md:text-7xl">
+                Your inbox, handled before you open it.
+              </h1>
+              <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
+                DONNA classifies mail, extracts the next action, and moves calendar-worthy work into your schedule with a dashboard that feels alive.
+              </p>
+
+              <form onSubmit={handleTryNow} className="mt-8 flex w-full max-w-xl flex-col gap-3 rounded-[1.6rem] border border-white/15 bg-white/10 p-2 shadow-2xl shadow-black/30 backdrop-blur-2xl sm:flex-row">
+                <input
+                  type="email"
+                  required
+                  placeholder="work@email.com"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  className="min-w-0 flex-1 rounded-2xl bg-transparent px-4 py-3 text-sm text-white outline-none placeholder:text-slate-400"
+                />
+                <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-black text-[#05070c] shadow-xl shadow-white/10 transition hover:-translate-y-0.5">
+                  Build my cockpit
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </form>
+
+              <div className="mt-8 flex flex-wrap gap-5 text-sm font-semibold text-slate-400">
+                <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-brand-teal" /> Mail classification</span>
+                <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-brand-teal" /> Calendar automation</span>
+                <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-brand-teal" /> Scam detection</span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94, rotateY: -18 }}
+              animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+              transition={{ duration: 0.95, ease: "easeOut" }}
+              className="lg:col-span-6"
+              style={{ perspective: 1200 }}
+            >
+              <motion.div
+                animate={{ rotateX: [2, -3, 2], rotateY: [-8, 8, -8], y: [0, -14, 0] }}
+                transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+                className="relative mx-auto max-w-[560px] rounded-[2rem] border border-white/15 bg-white/10 p-4 shadow-[0_40px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl"
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <div className="rounded-[1.4rem] border border-white/10 bg-[#060914]/88 p-4">
+                  <div className="mb-4 flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-widest text-slate-500">Live Inbox</p>
+                      <h3 className="text-xl font-black text-white">Priority stream</h3>
+                    </div>
+                    <div className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-black text-emerald-400">Analyzing</div>
+                  </div>
+
+                  <div className="space-y-3">
+                    {inboxRows.map(([from, subject, badge, color], index) => (
+                      <motion.div
+                        key={subject}
+                        initial={{ opacity: 0, x: 24 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.35 + index * 0.12 }}
+                        className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-sm"
+                      >
+                        <div className="flex min-w-0 items-center gap-3">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-blue/20 text-brand-electric">
+                            <Mail className="h-4 w-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="truncate text-sm font-black text-white">{subject}</p>
+                            <p className="truncate text-xs text-slate-500">{from}</p>
+                          </div>
+                        </div>
+                        <span className={`shrink-0 text-[10px] font-black uppercase ${color}`}>{badge}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <div className="mt-4 grid grid-cols-3 gap-3">
+                    {["94% signal", "6m saved", "2 events"].map((stat) => (
+                      <div key={stat} className="rounded-2xl border border-white/10 bg-white/[0.04] p-3 text-center text-xs font-black text-white">
+                        {stat}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="relative border-y border-slate-200 bg-white py-5 dark:border-slate-800 dark:bg-[#05070c]">
+          <div className="feature-marquee">
+            <div className="marquee-track">
+              {[...marqueeItems, ...marqueeItems].map((item, index) => (
+                <span key={`${item}-${index}`} className="rounded-full border border-slate-200 bg-slate-50 px-5 py-2 text-sm font-black text-slate-600 dark:border-slate-800 dark:bg-[#0f141c] dark:text-slate-300">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="features" className="relative mx-auto max-w-7xl px-6 py-24">
+          <div className="mb-10 max-w-2xl">
+            <p className="text-sm font-black uppercase tracking-widest text-brand-electric">What ships today</p>
+            <h2 className="mt-3 text-3xl font-black tracking-tight md:text-5xl">Built like a real operating system for email.</h2>
+          </div>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ delay: index * 0.08 }}
+                  className="reveal-card group min-h-[260px] rounded-[1.5rem] border border-white/70 bg-white/80 p-6 shadow-xl shadow-slate-950/[0.04] backdrop-blur-xl transition hover:-translate-y-1 hover:shadow-2xl dark:border-slate-800 dark:bg-[#0f141c]/80"
+                >
+                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white transition group-hover:scale-105 dark:bg-white dark:text-[#080b11]">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="text-lg font-black">{feature.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{feature.copy}</p>
+                  <div className="reveal-panel mt-5 rounded-2xl border border-brand-amber/20 bg-brand-amber/10 p-3 text-xs font-bold text-slate-700 dark:text-slate-200">
+                    {feature.reveal}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </section>
+
+        <section id="workflow" className="bg-slate-950 px-6 py-24 text-white">
+          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-3">
+            {[
+              [MailCheck, "1. Pull inbox batches", "Start with five emails, then load more as your queue grows."],
+              [Sparkles, "2. Analyze the signal", "DONNA assigns category, summary, and risk context."],
+              [Calendar, "3. Act instantly", "Schedule extracted events or keep reviewing the stream."],
+            ].map(([Icon, title, copy], index) => (
+              <motion.div
+                key={title as string}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-7 shadow-2xl shadow-black/20"
+              >
+                <Icon className="h-7 w-7 text-brand-teal" />
+                <h3 className="mt-6 text-2xl font-black">{title as string}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-400">{copy as string}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        <section className="px-6 py-24">
+          <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <p className="text-sm font-black uppercase tracking-widest text-brand-electric">Dashboard depth</p>
+              <h2 className="mt-3 text-4xl font-black tracking-tight md:text-5xl">More than a demo panel.</h2>
+              <p className="mt-5 text-slate-600 dark:text-slate-400">
+                The cockpit now includes live metrics, pagination, persona settings, integration rules, security visibility, and a documentation hub.
+              </p>
+            </div>
+            <div className="grid gap-4 lg:col-span-7 md:grid-cols-2">
+              {["Protected workspace", "Batch load more", "Persona memory", "Security overview"].map((item) => (
+                <div key={item} className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-950/[0.04] dark:border-slate-800 dark:bg-[#0f141c]">
+                  <Clock3 className="h-5 w-5 text-brand-electric" />
+                  <p className="mt-5 text-lg font-black">{item}</p>
+                  <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">Designed to feel like an actual SaaS product, not a static project page.</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-6 pb-24">
+          <div className="mx-auto max-w-5xl rounded-[2rem] border border-slate-200 bg-slate-950 p-8 text-center text-white shadow-2xl dark:border-slate-800">
+            <h2 className="text-4xl font-black tracking-tight">Ready to turn inbox noise into decisions?</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-slate-400">Start with your email, connect Google, and let DONNA build the priority stream.</p>
+            <Link href="/auth/signup" className="mt-8 inline-flex items-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-black text-slate-950 transition hover:-translate-y-0.5">
+              Open DONNA
               <ArrowRight className="h-4 w-4" />
-            </button>
-          </form>
-        </div>
-
-        {/* Right Graphical Visual Showcase Component */}
-        <div className="lg:col-span-5 relative flex items-center justify-center">
-          <div className="w-full aspect-square max-w-[440px] rounded-3xl relative overflow-hidden bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-[#0f141c] dark:to-slate-900/40 border border-slate-200 dark:border-slate-800/80 p-8 shadow-2xl flex items-center justify-center">
-            
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-64 h-64 rounded-full border-[12px] border-brand-blue/30 dark:border-brand-blue/20 animate-spin" style={{ animationDuration: '20s' }} />
-              <div className="absolute w-48 h-48 rounded-full border-[6px] border-dashed border-brand-amber/40 dark:border-brand-amber/20 animate-spin" style={{ animationDuration: '10s' }} />
-            </div>
-
-            <div className="z-10 bg-white/80 dark:bg-[#080b11]/80 backdrop-blur-xl border border-slate-200/60 dark:border-slate-800/80 rounded-2xl p-6 w-full shadow-xl space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 rounded-full bg-rose-500" />
-                  <div className="w-3 h-3 rounded-full bg-amber-500" />
-                  <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                </div>
-                <span className="text-xs font-mono text-brand-electric bg-brand-blue/10 px-2 py-0.5 rounded">AI Engine Active</span>
-              </div>
-              
-              <div className="space-y-2.5">
-                <div className="p-3 bg-rose-500/10 dark:bg-rose-500/5 border border-rose-500/20 rounded-xl flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Mail className="text-rose-500 h-4 w-4" />
-                    <span className="text-xs font-medium">Urgent Security Request</span>
-                  </div>
-                  <span className="text-[10px] uppercase font-bold text-rose-500 bg-rose-500/10 px-2 py-0.5 rounded">CRITICAL</span>
-                </div>
-
-                <div className="p-3 bg-brand-amber/10 dark:bg-brand-amber/5 border border-brand-amber/20 rounded-xl flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Calendar className="text-brand-amber h-4 w-4" />
-                    <span className="text-xs font-medium">Project Sync Meeting</span>
-                  </div>
-                  <span className="text-[10px] uppercase font-bold text-brand-amber bg-brand-amber/10 px-2 py-0.5 rounded">SCHEDULED</span>
-                </div>
-
-                <div className="p-3 bg-brand-teal/10 dark:bg-brand-teal/5 border border-brand-teal/20 rounded-xl flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Sparkles className="text-brand-teal h-4 w-4" />
-                    <span className="text-xs font-medium">Weekly Operations Report</span>
-                  </div>
-                  <span className="text-[10px] uppercase font-bold text-brand-teal bg-brand-teal/10 px-2 py-0.5 rounded">ANALYZED</span>
-                </div>
-              </div>
-            </div>
+            </Link>
           </div>
-        </div>
+        </section>
       </main>
-
-      {/* Interactive Feature Deep Dive Grid */}
-      <section id="features" className="max-w-7xl mx-auto px-6 py-24 space-y-16">
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">An AI Assistant That Runs Your Inbox Completely</h2>
-          <p className="text-slate-600 dark:text-slate-400">Everything you expect from an executive human assistant, automated locally with modern privacy controls.</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="p-6 bg-slate-50 dark:bg-[#0f141c] border border-slate-200 dark:border-slate-800/80 rounded-2xl space-y-4">
-            <div className="p-3 bg-brand-blue/10 text-brand-electric w-fit rounded-xl"><Shield className="h-6 w-6" /></div>
-            <h3 className="text-lg font-bold">Smart Classification</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Instantly segment threads into Important, Critical, Spam, or Scam buckets safely using structural data validation rules.</p>
-          </div>
-
-          <div className="p-6 bg-slate-50 dark:bg-[#0f141c] border border-slate-200 dark:border-slate-800/80 rounded-2xl space-y-4">
-            <div className="p-3 bg-brand-amber/10 text-brand-amber w-fit rounded-xl"><Calendar className="h-6 w-6" /></div>
-            <h3 className="text-lg font-bold">Calendar Auto-Mapping</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Extract text context dates, timelines, and action hours from raw email context data straight onto your Google Calendar automatically.</p>
-          </div>
-
-          <div className="p-6 bg-slate-50 dark:bg-[#0f141c] border border-slate-200 dark:border-slate-800/80 rounded-2xl space-y-4">
-            <div className="p-3 bg-brand-teal/10 text-brand-teal w-fit rounded-xl"><Sparkles className="h-6 w-6" /></div>
-            <h3 className="text-lg font-bold">Content Summarization</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Skim text summaries instead of wading through endless conversation loops. Understand payloads at a glance.</p>
-          </div>
-
-          <div className="p-6 bg-slate-50 dark:bg-[#0f141c] border border-slate-200 dark:border-slate-800/80 rounded-2xl space-y-4">
-            <div className="p-3 bg-purple-500/10 text-purple-400 w-fit rounded-xl"><LayoutDashboard className="h-6 w-6" /></div>
-            <h3 className="text-lg font-bold">Workspace Analytics</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Gain precise visibility into your communication metrics, tracking time saved and processing velocity visually.</p>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

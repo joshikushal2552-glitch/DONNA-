@@ -3,8 +3,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: "DONNA - Achieve Inbox Zero with AI Email Assistant",
-  description: "Let AI organize, sort, archive, and auto-schedule your emails flawlessly.",
+  title: "DONNA - AI Inbox Command Center",
+  description: "A premium AI email assistant for Gmail triage, summaries, risk detection, and calendar automation.",
 };
 
 export default function RootLayout({
