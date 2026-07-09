@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Lenis from "lenis";
+import logoImg from "./logoo.png";
 
 export default function LandingPage() {
   const [email, setEmail] = useState("");
@@ -63,7 +64,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-8 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
             <Image 
-              src="/logoo.png" 
+              src={logoImg} 
               alt="DONNA Logo" 
               width={24} 
               height={24} 
@@ -361,7 +362,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="max-w-7xl mx-auto px-8 py-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-white/30 font-normal">
         <div className="flex items-center gap-2">
-          <Image src="/logoo.png" alt="DONNA Logo" width={16} height={16} className="opacity-30" />
+          <Image src={logoImg} alt="DONNA Logo" width={16} height={16} className="opacity-30" />
           <span>© 2026 DONNA. All rights reserved.</span>
         </div>
         <div className="flex gap-8">
