@@ -1,288 +1,375 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  Calendar,
-  CheckCircle2,
-  Clock3,
-  Mail,
-  MailCheck,
-  Shield,
-  Sparkles,
-  Zap,
-} from "lucide-react";
-import { ThemeToggle } from "@/components/theme-toggle";
-
-const features = [
-  { icon: Shield, title: "Mail classification", copy: "Critical, important, spam, and scam threads are separated into clean review lanes.", reveal: "Know what needs action before opening the message." },
-  { icon: Sparkles, title: "Message summaries", copy: "Dense snippets become concise, readable context with the next action surfaced.", reveal: "Less reading, faster decisions." },
-  { icon: Calendar, title: "Calendar automation", copy: "Detected meetings and deadlines become schedule-ready Google Calendar actions.", reveal: "No more manual copy-paste from email." },
-  { icon: Zap, title: "Load more analysis", copy: "Analyze inbox batches of five and keep expanding the stream as needed.", reveal: "Built for real inbox workflows." },
-];
-
-const marqueeItems = [
-  "Mail classification",
-  "Calendar automation",
-  "Scam detection",
-  "Priority stream",
-  "Executive summaries",
-  "Batch analysis",
-  "Protected dashboard",
-  "Persona settings",
-];
-
-const inboxRows = [
-  ["Security vendor", "API key rotation due tomorrow", "critical", "text-rose-500"],
-  ["Product lead", "Design review moved to 4 PM", "event", "text-brand-teal"],
-  ["Founder update", "Metrics packet and investor notes", "important", "text-brand-amber"],
-];
+import Lenis from "lenis";
 
 export default function LandingPage() {
-  const [emailInput, setEmailInput] = useState("");
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    // Initialize Lenis smooth scrolling
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: "vertical",
+      gestureOrientation: "vertical",
+      smoothWheel: true,
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
 
   const handleTryNow = (e: React.FormEvent) => {
     e.preventDefault();
-    if (emailInput.trim()) {
-      window.location.href = `/auth/signup?email=${encodeURIComponent(emailInput)}`;
+    if (email) {
+      window.location.href = `/auth/signup?email=${encodeURIComponent(email)}`;
+    } else {
+      window.location.href = "/auth/signup";
     }
   };
 
+  // Subtle, premium motion system
+  const fadeUp = {
+    initial: { opacity: 0, y: 12 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+  };
+
+  const staggerContainer = {
+    animate: { transition: { staggerChildren: 0.08 } }
+  };
+
+  const pageStyle = {
+    fontFamily: '"ULM Grotesk",  ui-sans-serif, system-ui, sans-serif',
+  };
+
   return (
-    <div className="min-h-screen overflow-hidden bg-[#f7f9fc] text-slate-950 dark:bg-[#05070c] dark:text-white transition-colors duration-300">
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-white/70 backdrop-blur-2xl dark:bg-[#05070c]/65">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-          <Link href="/" className="font-mono text-2xl font-black tracking-tight">DONNA</Link>
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-slate-600 dark:text-slate-300 md:flex">
-            <Link href="#features" className="transition hover:text-slate-950 dark:hover:text-white">Features</Link>
-            <Link href="#workflow" className="transition hover:text-slate-950 dark:hover:text-white">Workflow</Link>
-            <Link href="/pricing" className="transition hover:text-slate-950 dark:hover:text-white">Pricing</Link>
-            <Link href="/enterprise" className="transition hover:text-slate-950 dark:hover:text-white">Enterprise</Link>
+    <div className="min-h-screen bg-[#06070A] text-white relative selection:bg-[#F08049]/30 selection:text-white" style={pageStyle}>
+      
+      {/* Header */}
+      <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#06070A]/80 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-8 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5">
+            <Image 
+              src="/logoo.png" 
+              alt="DONNA Logo" 
+              width={24} 
+              height={24} 
+              className="object-contain"
+              priority
+            />
+            <span className="text-sm font-medium tracking-tight text-white">DONNA</span>
+          </Link>
+
+          <nav className="hidden md:flex items-center gap-8 text-sm text-white/60">
+            <Link href="/pricing" className="hover:text-white transition-colors duration-150">Pricing</Link>
+            <Link href="/enterprise" className="hover:text-white transition-colors duration-150">Enterprise</Link>
           </nav>
-          <div className="flex items-center gap-4">
-            <ThemeToggle />
-            <Link href="/auth/login" className="hidden text-sm font-bold text-slate-600 transition hover:text-slate-950 dark:text-slate-300 dark:hover:text-white sm:block">Login</Link>
-            <Link href="/auth/signup" className="rounded-full bg-white px-5 py-2.5 text-sm font-black text-[#05070c] shadow-xl shadow-black/20 transition hover:-translate-y-0.5">
-              Start free
+
+          <div className="flex items-center gap-6">
+            <Link href="/auth/login" className="text-sm text-white/60 hover:text-white transition-colors duration-150">
+              Log in
+            </Link>
+            <Link 
+              href="/auth/signup" 
+              className="text-sm bg-[#F08049] text-[#06070A] px-4 py-1.5 rounded-full font-medium hover:bg-[#F08049]/90 transition-colors duration-150"
+            >
+              Sign up
             </Link>
           </div>
         </div>
       </header>
 
-      <main>
-        <section className="relative min-h-screen overflow-hidden pt-20">
-          <div className="neural-bg" />
-          {[0, 1, 2, 3, 4].map((line) => (
-            <div
-              key={line}
-              className="wave-line"
-              style={{
-                top: `${36 + line * 8}%`,
-                "--r": `${line % 2 ? -4 : 5}deg`,
-                "--y": `${line % 2 ? -22 : 18}px`,
-                animationDelay: `${line * -1.2}s`,
-              } as React.CSSProperties}
-            />
+      {/* Hero Section */}
+      <section className="max-w-7xl mx-auto px-8 pt-24 pb-40 lg:pt-36 lg:pb-56 grid grid-cols-1 lg:grid-cols-12 gap-24 items-center">
+        <motion.div 
+          className="lg:col-span-7 flex flex-col justify-center text-left"
+          initial="initial"
+          animate="animate"
+          variants={staggerContainer}
+        >
+          <motion.span 
+            variants={fadeUp} 
+            className="text-sm font-medium tracking-wider text-[#F08049] uppercase mb-6 block"
+          >
+            AI Chief of Staff
+          </motion.span>
+          
+          <motion.h1 
+            variants={fadeUp} 
+            className="text-[72px] md:text-[96px] lg:text-[120px] font-medium text-white tracking-[-0.08em] leading-[0.92] mb-8"
+          >
+            Donna already took care of it.
+          </motion.h1>
+          
+          <motion.p 
+            variants={fadeUp} 
+            className="text-lg md:text-xl text-white/60 font-normal max-w-xl leading-relaxed mb-10"
+          >
+            She reads every email, finds what matters, books the meeting, drafts the reply, and leaves you with only the decisions.
+          </motion.p>
+
+          {/* Email Capture Form */}
+          <motion.div variants={fadeUp} className="max-w-md w-full mb-6">
+            <form onSubmit={handleTryNow} className="flex p-1 bg-white/[0.03] border border-white/10 rounded-full focus-within:border-[#F08049]/30 transition-colors duration-200">
+              <input 
+                type="email" 
+                placeholder="Enter your work email..." 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-transparent text-white placeholder:text-white/30 text-sm pl-5 pr-2 py-2.5 w-full focus:outline-none"
+                required
+              />
+              <button 
+                type="submit" 
+                className="bg-[#F08049] text-[#06070A] text-sm font-medium px-5 py-2.5 rounded-full hover:bg-[#F08049]/90 whitespace-nowrap transition-colors duration-150"
+              >
+                See DONNA Work
+              </button>
+            </form>
+          </motion.div>
+
+          {/* Value Propositions */}
+          <motion.div variants={fadeUp} className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/40">
+            <span className="flex items-center gap-1.5"><span className="text-[#F08049]">✓</span> Knows what matters</span>
+            <span className="flex items-center gap-1.5"><span className="text-[#F08049]">✓</span> Protects your time</span>
+            <span className="flex items-center gap-1.5"><span className="text-[#F08049]">✓</span> Never misses details</span>
+          </motion.div>
+        </motion.div>
+
+        {/* Hero Right Panel */}
+        <motion.div 
+          className="lg:col-span-5 flex justify-center lg:justify-end"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+        >
+          <div className="w-full max-w-md bg-white/[0.02] border border-white/10 rounded-[32px] p-8 text-left tracking-tight">
+            <div className="flex items-center justify-between mb-8">
+              <span className="text-xs font-medium tracking-[0.2em] text-white/40">DONNA</span>
+              <div className="w-2 h-2 rounded-full bg-[#F08049] shadow-[0_0_12px_rgba(240,128,73,0.4)]" />
+            </div>
+
+            <h3 className="text-2xl font-medium text-white mb-1">Good morning.</h3>
+            <p className="text-white/40 text-sm mb-6">3 things need your attention.</p>
+
+            <div className="border-t border-white/10 my-5" />
+
+            <div className="space-y-5 py-2">
+              <div>
+                <h4 className="text-sm font-medium text-white">Investor Update</h4>
+                <p className="text-xs text-white/40 mt-0.5">Requires response</p>
+              </div>
+              <div>
+                <h4 className="text-sm font-medium text-white">Board Meeting</h4>
+                <p className="text-xs text-white/40 mt-0.5">Scheduled Thursday</p>
+              </div>
+              <div>
+                <h4 className="text-sm font-medium text-white">Partnership Contract</h4>
+                <p className="text-xs text-white/40 mt-0.5">Review requested</p>
+              </div>
+            </div>
+
+            <div className="border-t border-white/10 my-5" />
+
+            <p className="text-sm text-white/60">Everything else is handled.</p>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Section 2: Large Centered Statement */}
+      <section className="max-w-7xl mx-auto px-8 py-48 lg:py-64 text-center">
+        <motion.h2 
+          className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-tight text-white leading-[1.1] max-w-5xl mx-auto"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+        >
+          Most inboxes create work. <br />
+          <span className="text-[#F08049]">Donna</span> removes it.
+        </motion.h2>
+      </section>
+
+      {/* Section 3: Proposition Cards */}
+      <section className="max-w-7xl mx-auto px-8 py-24">
+        <div className="text-center mb-20">
+          <h2 className="text-3xl md:text-5xl font-medium tracking-tight text-white mb-4">She&apos;s not another inbox assistant.</h2>
+          <p className="text-lg text-white/40 font-normal">She&apos;s the person everyone wishes they had.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { title: "Understands context", desc: "Maps your operational realities and flags nuanced opportunities immediately." },
+            { title: "Protects your time", desc: "Deflects low-priority clutter and resolves scheduling friction autonomously." },
+            { title: "Remembers details", desc: "Tracks operational histories and context across all historical threads." },
+            { title: "Gets things done", desc: "Drafts comprehensive communications and coordinates standard workflows flawlessly." }
+          ].map((card, idx) => (
+            <motion.div 
+              key={idx}
+              className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 transition-colors duration-300 hover:border-[#F08049]/30"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: idx * 0.05 }}
+            >
+              <h3 className="text-lg font-medium text-white mb-3">{card.title}</h3>
+              <p className="text-sm text-white/50 leading-relaxed font-normal">{card.desc}</p>
+            </motion.div>
           ))}
+        </div>
+      </section>
 
-          <div className="relative z-10 mx-auto grid min-h-[calc(100vh-5rem)] max-w-7xl grid-cols-1 items-center gap-12 px-6 py-16 lg:grid-cols-12">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.75, ease: "easeOut" }}
-              className="lg:col-span-6"
+      {/* Section 4: Vertical Timeline */}
+      <section className="max-w-3xl mx-auto px-8 py-32 lg:py-48">
+        <div className="text-center mb-20">
+          <h2 className="text-3xl md:text-5xl font-medium tracking-tight text-white">A day of work. In 12 seconds.</h2>
+        </div>
+
+        <div className="relative border-l border-white/10 ml-4 md:ml-36 pl-8 space-y-14">
+          {[
+            { time: "08:02 AM", title: "238 emails analyzed", desc: "High-volume inputs contextually organized, matched, and classified correctly." },
+            { time: "08:02 AM", title: "3 critical items surfaced", desc: "Surfaced urgent decisions requiring individual founder attention." },
+            { time: "08:03 AM", title: "2 meetings scheduled", desc: "Cross-checked team calendars, resolved time zones, and distributed invites." },
+            { time: "08:04 AM", title: "7 follow-ups drafted", desc: "Accurate, structured message responses staged inside your workspace." }
+          ].map((item, idx) => (
+            <motion.div 
+              key={idx} 
+              className="relative"
+              initial={{ opacity: 0, x: -8 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: idx * 0.05 }}
             >
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-black uppercase tracking-wider text-white/80 backdrop-blur-xl">
-                <Sparkles className="h-3.5 w-3.5 text-brand-teal" />
-                AI inbox command center
+              {/* Timeline dot */}
+              <div className="absolute -left-[37px] top-1.5 w-4 h-4 rounded-full bg-[#06070A] border-2 border-[#F08049]" />
+              
+              <div className="md:absolute md:-left-44 md:top-0 text-xs font-medium tracking-wider text-[#F08049] uppercase mb-2 md:mb-0 w-28 text-left">
+                {item.time}
               </div>
-              <h1 className="max-w-3xl text-5xl font-black leading-[1.02] tracking-tight text-white md:text-7xl">
-                Your inbox, handled before you open it.
-              </h1>
-              <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
-                DONNA classifies mail, extracts the next action, and moves calendar-worthy work into your schedule with a dashboard that feels alive.
-              </p>
-
-              <form onSubmit={handleTryNow} className="mt-8 flex w-full max-w-xl flex-col gap-3 rounded-[1.6rem] border border-white/15 bg-white/10 p-2 shadow-2xl shadow-black/30 backdrop-blur-2xl sm:flex-row">
-                <input
-                  type="email"
-                  required
-                  placeholder="work@email.com"
-                  value={emailInput}
-                  onChange={(e) => setEmailInput(e.target.value)}
-                  className="min-w-0 flex-1 rounded-2xl bg-transparent px-4 py-3 text-sm text-white outline-none placeholder:text-slate-400"
-                />
-                <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-black text-[#05070c] shadow-xl shadow-white/10 transition hover:-translate-y-0.5">
-                  Build my cockpit
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-              </form>
-
-              <div className="mt-8 flex flex-wrap gap-5 text-sm font-semibold text-slate-400">
-                <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-brand-teal" /> Mail classification</span>
-                <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-brand-teal" /> Calendar automation</span>
-                <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-brand-teal" /> Scam detection</span>
+              
+              <div>
+                <h3 className="text-lg font-medium text-white mb-1">{item.title}</h3>
+                <p className="text-sm text-white/40 leading-relaxed font-normal">{item.desc}</p>
               </div>
             </motion.div>
+          ))}
+        </div>
+      </section>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.94, rotateY: -18 }}
-              animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-              transition={{ duration: 0.95, ease: "easeOut" }}
-              className="lg:col-span-6"
-              style={{ perspective: 1200 }}
+      {/* Testimonials */}
+      <section className="max-w-7xl mx-auto px-8 py-32 lg:py-48 border-t border-white/5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 lg:gap-16">
+          <motion.div 
+            className="flex flex-col justify-between"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <p className="text-3xl md:text-4xl font-normal tracking-tight leading-relaxed text-white/90 mb-10">
+              &ldquo;I stopped checking my inbox first thing in the morning.&rdquo;
+            </p>
+            <div>
+              <p className="text-base font-medium text-white">Sarah Chen</p>
+              <p className="text-xs tracking-wider text-white/40 uppercase mt-0.5">Founder</p>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            className="flex flex-col justify-between"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <p className="text-3xl md:text-4xl font-normal tracking-tight leading-relaxed text-white/90 mb-10">
+              &ldquo;It feels like having a chief of staff who never sleeps.&rdquo;
+            </p>
+            <div>
+              <p className="text-base font-medium text-white">Michael Vance</p>
+              <p className="text-xs tracking-wider text-white/40 uppercase mt-0.5">Product Lead</p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Metrics */}
+      <section className="max-w-7xl mx-auto px-8 py-32 border-t border-white/5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 text-left">
+          {[
+            { metric: "4.3", label: "hours returned every week" },
+            { metric: "98.4%", label: "classification accuracy" },
+            { metric: "3 min", label: "average setup" }
+          ].map((stat, idx) => (
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.05 }}
+              className="flex flex-col"
             >
-              <motion.div
-                animate={{ rotateX: [2, -3, 2], rotateY: [-8, 8, -8], y: [0, -14, 0] }}
-                transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-                className="relative mx-auto max-w-[560px] rounded-[2rem] border border-white/15 bg-white/10 p-4 shadow-[0_40px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl"
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                <div className="rounded-[1.4rem] border border-white/10 bg-[#060914]/88 p-4">
-                  <div className="mb-4 flex items-center justify-between">
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-widest text-slate-500">Live Inbox</p>
-                      <h3 className="text-xl font-black text-white">Priority stream</h3>
-                    </div>
-                    <div className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-black text-emerald-400">Analyzing</div>
-                  </div>
-
-                  <div className="space-y-3">
-                    {inboxRows.map(([from, subject, badge, color], index) => (
-                      <motion.div
-                        key={subject}
-                        initial={{ opacity: 0, x: 24 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.35 + index * 0.12 }}
-                        className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-sm"
-                      >
-                        <div className="flex min-w-0 items-center gap-3">
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-blue/20 text-brand-electric">
-                            <Mail className="h-4 w-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="truncate text-sm font-black text-white">{subject}</p>
-                            <p className="truncate text-xs text-slate-500">{from}</p>
-                          </div>
-                        </div>
-                        <span className={`shrink-0 text-[10px] font-black uppercase ${color}`}>{badge}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  <div className="mt-4 grid grid-cols-3 gap-3">
-                    {["94% signal", "6m saved", "2 events"].map((stat) => (
-                      <div key={stat} className="rounded-2xl border border-white/10 bg-white/[0.04] p-3 text-center text-xs font-black text-white">
-                        {stat}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
+              <span className="text-6xl md:text-7xl lg:text-8xl font-medium tracking-tight text-white mb-3">
+                {stat.metric}
+              </span>
+              <span className="text-xs text-white/40 uppercase tracking-wider font-medium">
+                {stat.label}
+              </span>
             </motion.div>
-          </div>
-        </section>
+          ))}
+        </div>
+      </section>
 
-        <section className="relative border-y border-slate-200 bg-white py-5 dark:border-slate-800 dark:bg-[#05070c]">
-          <div className="feature-marquee">
-            <div className="marquee-track">
-              {[...marqueeItems, ...marqueeItems].map((item, index) => (
-                <span key={`${item}-${index}`} className="rounded-full border border-slate-200 bg-slate-50 px-5 py-2 text-sm font-black text-slate-600 dark:border-slate-800 dark:bg-[#0f141c] dark:text-slate-300">
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
+      {/* Final CTA */}
+      <section className="max-w-7xl mx-auto px-8 pb-40 pt-12">
+        <motion.div 
+          className="w-full bg-white/[0.02] border border-white/10 rounded-[40px] py-24 px-8 text-center relative overflow-hidden"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-4xl md:text-6xl font-medium tracking-tight mb-6 max-w-2xl mx-auto leading-tight text-white">
+            Email was never meant to be work.
+          </h2>
+          <p className="text-base md:text-lg text-white/40 max-w-md mx-auto mb-10 leading-relaxed font-normal">
+            Let Donna handle the inbox. You handle everything else.
+          </p>
+          
+          <Link 
+            href="/auth/signup" 
+            className="inline-block bg-[#F08049] text-[#06070A] px-8 py-3.5 rounded-full font-medium hover:bg-[#F08049]/90 transition-colors duration-150 text-base shadow-[0_0_40px_rgba(240,128,73,0.15)]"
+          >
+            Open DONNA
+          </Link>
+        </motion.div>
+      </section>
 
-        <section id="features" className="relative mx-auto max-w-7xl px-6 py-24">
-          <div className="mb-10 max-w-2xl">
-            <p className="text-sm font-black uppercase tracking-widest text-brand-electric">What ships today</p>
-            <h2 className="mt-3 text-3xl font-black tracking-tight md:text-5xl">Built like a real operating system for email.</h2>
-          </div>
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ delay: index * 0.08 }}
-                  className="reveal-card group min-h-[260px] rounded-[1.5rem] border border-white/70 bg-white/80 p-6 shadow-xl shadow-slate-950/[0.04] backdrop-blur-xl transition hover:-translate-y-1 hover:shadow-2xl dark:border-slate-800 dark:bg-[#0f141c]/80"
-                >
-                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white transition group-hover:scale-105 dark:bg-white dark:text-[#080b11]">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="text-lg font-black">{feature.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{feature.copy}</p>
-                  <div className="reveal-panel mt-5 rounded-2xl border border-brand-amber/20 bg-brand-amber/10 p-3 text-xs font-bold text-slate-700 dark:text-slate-200">
-                    {feature.reveal}
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </section>
+      {/* Footer */}
+      <footer className="max-w-7xl mx-auto px-8 py-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-white/30 font-normal">
+        <div className="flex items-center gap-2">
+          <Image src="/logoo.png" alt="DONNA Logo" width={16} height={16} className="opacity-30" />
+          <span>© 2026 DONNA. All rights reserved.</span>
+        </div>
+        <div className="flex gap-8">
+          <Link href="/privacy" className="hover:text-white/50 transition-colors duration-150">Privacy Policy</Link>
+          <Link href="/terms" className="hover:text-white/50 transition-colors duration-150">Terms of Service</Link>
+        </div>
+      </footer>
 
-        <section id="workflow" className="bg-slate-950 px-6 py-24 text-white">
-          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-3">
-            {[
-              [MailCheck, "1. Pull inbox batches", "Start with five emails, then load more as your queue grows."],
-              [Sparkles, "2. Analyze the signal", "DONNA assigns category, summary, and risk context."],
-              [Calendar, "3. Act instantly", "Schedule extracted events or keep reviewing the stream."],
-            ].map(([Icon, title, copy], index) => (
-              <motion.div
-                key={title as string}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-7 shadow-2xl shadow-black/20"
-              >
-                <Icon className="h-7 w-7 text-brand-teal" />
-                <h3 className="mt-6 text-2xl font-black">{title as string}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-400">{copy as string}</p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        <section className="px-6 py-24">
-          <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-5">
-              <p className="text-sm font-black uppercase tracking-widest text-brand-electric">Dashboard depth</p>
-              <h2 className="mt-3 text-4xl font-black tracking-tight md:text-5xl">More than a demo panel.</h2>
-              <p className="mt-5 text-slate-600 dark:text-slate-400">
-                The cockpit now includes live metrics, pagination, persona settings, integration rules, security visibility, and a documentation hub.
-              </p>
-            </div>
-            <div className="grid gap-4 lg:col-span-7 md:grid-cols-2">
-              {["Protected workspace", "Batch load more", "Persona memory", "Security overview"].map((item) => (
-                <div key={item} className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-950/[0.04] dark:border-slate-800 dark:bg-[#0f141c]">
-                  <Clock3 className="h-5 w-5 text-brand-electric" />
-                  <p className="mt-5 text-lg font-black">{item}</p>
-                  <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">Designed to feel like an actual SaaS product, not a static project page.</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="px-6 pb-24">
-          <div className="mx-auto max-w-5xl rounded-[2rem] border border-slate-200 bg-slate-950 p-8 text-center text-white shadow-2xl dark:border-slate-800">
-            <h2 className="text-4xl font-black tracking-tight">Ready to turn inbox noise into decisions?</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-slate-400">Start with your email, connect Google, and let DONNA build the priority stream.</p>
-            <Link href="/auth/signup" className="mt-8 inline-flex items-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-black text-slate-950 transition hover:-translate-y-0.5">
-              Open DONNA
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </section>
-      </main>
     </div>
   );
 }
